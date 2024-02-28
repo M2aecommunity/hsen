@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حصن</title>
+<style>
+  body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set the body height to 100% of the viewport height */
+    margin: 0; /* Remove default margin */
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .maps-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .map-container {
+    position: relative;
+    display: inline-block;
+    margin: 0 20px 20px; /* Added margin to separate map containers */
+  }
+
+  .map-label {
+    color: white;
+    text-align: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .reset-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .red-dot {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+  }
+
+  .map-image {
+    max-width: 100%; /* Ensure map images don't exceed container width */
+  }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="maps-container">
+      <div class="map-container">
+        <div class="map-label">CH 1</div>
+        <img class="map-image" src="Sans titre1.png" alt="Map Image 1">
+        <div class="red-dots"></div>
+      </div>
+
+      <div class="map-container">
+        <div class="map-label">CH 2</div>
+        <img class="map-image" src="Sans titre.png" alt="Map Image 2">
+        <div class="red-dots"></div>
+      </div>
+
+      <div class="map-container">
+        <div class="map-label">CH 3</div>
+        <img class="map-image" src="Sans titre.png" alt="Map Image 3">
+        <div class="red-dots"></div>
+      </div>
+
+      <div class="map-container">
+        <div class="map-label">CH 4</div>
+        <img class="map-image" src="Sans titre.png" alt="Map Image 4">
+        <div class="red-dots"></div>
+      </div>
+    </div> <!-- End of .maps-container -->
+
+    <button class="reset-btn">Reset All Dots</button>
+  </div> <!-- End of .container -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var mapContainers = document.querySelectorAll(".map-container");
+    var resetBtn = document.querySelector(".reset-btn");
+
+    mapContainers.forEach(function(container) {
+      var mapImage = container.querySelector(".map-image");
+      var redDotsContainer = container.querySelector(".red-dots");
+      var dots = [];
+
+      mapImage.addEventListener("click", function(event) {
+        if (dots.length >= 1) {
+          dots[0].remove();
+          dots.pop();
+        }
+
+        var containerRect = container.getBoundingClientRect(); // Get the bounding rectangle of the map container
+        var offsetX = event.clientX - containerRect.left + window.scrollX; // Calculate X coordinate relative to the map container and account for horizontal scroll
+        var offsetY = event.clientY - containerRect.top + window.scrollY; // Calculate Y coordinate relative to the map container, adjust for the label height, and account for vertical scroll
+
+        var dot = document.createElement("div");
+        dot.className = "red-dot";
+        dot.style.top = (offsetY - 5) + "px";
+        dot.style.left = (offsetX - 5) + "px";
+        redDotsContainer.appendChild(dot);
+        dots.push(dot);
+      });
+
+      mapImage.addEventListener("contextmenu", function(event) {
+        event.preventDefault();
+        
+        if (dots.length >= 1) {
+          dots[0].remove();
+          dots.pop();
+        }
+      });
+    });
+
+    resetBtn.addEventListener("click", function() {
+      var allRedDots = document.querySelectorAll(".red-dot");
+      allRedDots.forEach(function(dot) {
+        dot.remove();
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>
